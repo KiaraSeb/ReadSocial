@@ -1,25 +1,39 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agrega los servicios necesarios aquí, por ejemplo, para controladores:
+// Agrega servicios al contenedor.
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ReadSocial API", Version = "v1" });
+});
 
 var app = builder.Build();
 
-// Configuración del middleware
+// Configura la tubería de solicitudes HTTP.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
-app.UseRouting();
-
-app.UseEndpoints(endpoints =>
+// Habilita Swagger y el Swagger UI
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    endpoints.MapControllers();
+    // Configura el endpoint para la documentación de Swagger
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ReadSocial API V1");
+
+    // Cambia esto para que Swagger UI esté en una ruta específica
+    c.RoutePrefix = "swagger"; // Puedes dejarlo como string.Empty para que esté en la raíz
 });
+
+// Middleware adicional
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+// Mapea los controladores
+app.MapControllers();
 
 app.Run();

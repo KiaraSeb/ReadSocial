@@ -1,25 +1,28 @@
-using ReadSocial.Models;
-using ReadSocial.Dto;
+using ReadSocial.Dto; // Importa los DTOs
+using ReadSocial.Models; // Importa los modelos
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReadSocial.Services
 {
     public class ForumService
     {
-        private List<Thread> _threads = new List<Thread>();
+        private List<ReadSocial.Models.Thread> _threads = new List<ReadSocial.Models.Thread>();
 
-        public Thread CreateThread(CreateThreadDto dto)
+        public ReadSocial.Models.Thread CreateThread(CreateThreadDto dto)
         {
-            var newThread = new Thread
+            var newThread = new ReadSocial.Models.Thread
             {
                 Id = _threads.Count + 1,
                 Title = dto.Title,
-                Author = dto.Author
+                Author = dto.Author,
+                Posts = new List<Post>() // Inicializa la lista de posts
             };
             _threads.Add(newThread);
             return newThread;
         }
 
-        public List<Thread> GetThreads()
+        public List<ReadSocial.Models.Thread> GetThreads()
         {
             return _threads;
         }
@@ -43,7 +46,14 @@ namespace ReadSocial.Services
         public List<Post> GetPosts(int threadId)
         {
             var thread = _threads.FirstOrDefault(t => t.Id == threadId);
-            return thread?.Posts ?? new List<Post>();
+            
+            // Verificamos si thread es null antes de acceder a Posts
+            if (thread == null)
+            {
+                return new List<Post>(); // Retorna una lista vacía si el thread no existe
+            }
+
+            return thread.Posts; // Si thread no es null, retornamos su lista de Posts
         }
     }
 }
