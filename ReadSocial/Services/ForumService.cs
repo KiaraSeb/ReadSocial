@@ -1,19 +1,20 @@
-using System.Threading; // Agregar para poder usar Thread de System.Threading
-using ReadSocial.Models; // Para los modelos personalizados, como Thread
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using ReadSocial.Dto;
 using ReadSocial.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using ReadSocial.Models;
+using Thread = ReadSocial.Models.Thread; // Alias explícito para Thread
 
 namespace ReadSocial.Services
 {
     public class ForumService : IForumService
     {
-        private List<ReadSocial.Models.Thread> _threads = new List<ReadSocial.Models.Thread>();
+        private readonly List<Thread> _threads = new();
 
-        public async Task<ReadSocial.Models.Thread> CreateThreadAsync(CreateThreadDto dto)
+        public async Task<Thread> CreateThreadAsync(CreateThreadDto dto)
         {
-            var newThread = new ReadSocial.Models.Thread
+            var newThread = new Thread
             {
                 Id = _threads.Count + 1,
                 Title = dto.Title,
@@ -23,7 +24,7 @@ namespace ReadSocial.Services
             return await Task.FromResult(newThread);
         }
 
-        public List<ReadSocial.Models.Thread> GetThreads()
+        public List<Thread> GetThreads()
         {
             return _threads;
         }
@@ -47,11 +48,7 @@ namespace ReadSocial.Services
         public List<Post> GetPosts(int threadId)
         {
             var thread = _threads.FirstOrDefault(t => t.Id == threadId);
-            if (thread == null)
-            {
-                return new List<Post>();
-            }
-            return thread.Posts;
+            return thread?.Posts ?? new List<Post>();
         }
     }
 }
