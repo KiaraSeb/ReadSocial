@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ReadSocial.Models;
-using Thread = ReadSocial.Models.Thread; // Alias explícito para Thread
 
 namespace ReadSocial.Data
 {
@@ -8,7 +7,7 @@ namespace ReadSocial.Data
     {
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options) : base(options) { }
 
-        public DbSet<Thread> Threads { get; set; } // Alias explícito para evitar ambigüedad
+        public DbSet<ReadSocial.Models.Thread> Threads { get; set; } // Uso explícito del namespace
         public DbSet<Post> Posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

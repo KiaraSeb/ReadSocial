@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #threads-list, #posts-list {
+    margin-top: 20px;
+  }
+  
+  form {
+    margin-top: 20px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  

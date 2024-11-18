@@ -1,54 +1,62 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ReadSocial.Data;
 using ReadSocial.Dto;
 using ReadSocial.Interfaces;
 using ReadSocial.Models;
-using Thread = ReadSocial.Models.Thread; // Alias explícito para Thread
+using Thread = ReadSocial.Models.Thread;
+
 
 namespace ReadSocial.Services
 {
     public class ForumService : IForumService
     {
-        private readonly List<Thread> _threads = new();
+        private readonly BibliotecaContext _context;
+
+        public ForumService(BibliotecaContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Thread>> GetThreads()
+        {
+            return await _context.Threads.ToListAsync();
+        }
 
         public async Task<Thread> CreateThreadAsync(CreateThreadDto dto)
         {
-            var newThread = new Thread
+            var thread = new Thread
             {
-                Id = _threads.Count + 1,
                 Title = dto.Title,
-                Posts = new List<Post>()
+                Description = dto.Description,
+                CreatedAt = DateTime.UtcNow
             };
-            _threads.Add(newThread);
-            return await Task.FromResult(newThread);
+
+            _context.Threads.Add(thread);
+            await _context.SaveChangesAsync();
+
+            return thread;
         }
 
-        public List<Thread> GetThreads()
+        Task<List<System.Threading.Thread>> IForumService.GetThreads()
         {
-            return _threads;
+            throw new NotImplementedException();
         }
 
-        public Post CreatePost(CreatePostDto dto)
+        Task<System.Threading.Thread> IForumService.CreateThreadAsync(CreateThreadDto dto)
         {
-            var thread = _threads.FirstOrDefault(t => t.Id == dto.ThreadId);
-            if (thread == null) return null;
-
-            var newPost = new Post
-            {
-                Id = thread.Posts.Count + 1,
-                ThreadId = dto.ThreadId,
-                Author = dto.Author,
-                Content = dto.Content
-            };
-            thread.Posts.Add(newPost);
-            return newPost;
+            throw new NotImplementedException();
         }
 
-        public List<Post> GetPosts(int threadId)
+        public Task<List<Post>> GetPostsByThreadAsync(int threadId)
         {
-            var thread = _threads.FirstOrDefault(t => t.Id == threadId);
-            return thread?.Posts ?? new List<Post>();
+            throw new NotImplementedException();
+        }
+
+        public Task<Post> CreatePostAsync(CreatePostDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

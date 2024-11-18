@@ -1,16 +1,18 @@
+using ReadSocial.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Thread = System.Threading.Thread;
 using ReadSocial.Dto;
-using ReadSocial.Models;
-using Thread = ReadSocial.Models.Thread; // Alias explícito para Thread
 
 namespace ReadSocial.Interfaces
 {
     public interface IForumService
-    {
-        Task<Thread> CreateThreadAsync(CreateThreadDto dto); // Usando el alias explícito
-        List<Thread> GetThreads();
-        Post CreatePost(CreatePostDto dto);
-        List<Post> GetPosts(int threadId);
-    }
+{
+    Task<List<Thread>> GetThreads();
+    Task<Thread> CreateThreadAsync(CreateThreadDto dto);  // Aquí debe devolver Task<Thread>
+    Task<List<Post>> GetPostsByThreadAsync(int threadId);
+    Task<Post> CreatePostAsync(CreatePostDto dto);
+
+}
+
 }

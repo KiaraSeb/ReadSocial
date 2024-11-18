@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foro de ReadSocial</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Foro de ReadSocial</h1>
+
+  <div id="threads-list">
+    <h2>Hilos:</h2>
+    <!-- Aquí se listarán los hilos -->
+  </div>
+
+  <div id="create-thread">
+    <h2>Crea un Nuevo Hilo:</h2>
+    <form id="new-thread-form">
+      <input type="text" id="title" placeholder="Título del hilo" required>
+      <button type="submit">Crear Hilo</button>
+    </form>
+  </div>
+
+  <div id="posts-list">
+    <h2>Posts del Hilo</h2>
+    <!-- Aquí se listarán los posts de un hilo -->
+  </div>
+
+  <div id="create-post">
+    <h2>Crear un Post:</h2>
+    <form id="new-post-form">
+      <input type="text" id="author" placeholder="Autor" required>
+      <textarea id="content" placeholder="Escribe tu post" required></textarea>
+      <button type="submit">Crear Post</button>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
