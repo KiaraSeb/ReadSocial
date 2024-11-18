@@ -12,7 +12,7 @@ namespace ReadSocial.Interfaces
     Task<Thread> CreateThreadAsync(CreateThreadDto dto);  // Aquí debe devolver Task<Thread>
     Task<List<Post>> GetPostsByThreadAsync(int threadId);
     Task<Post> CreatePostAsync(CreatePostDto dto);
-
-}
+        Task CreateThreadAsync(Controllers.CreateThreadDto dto);
+    }
 
 }
