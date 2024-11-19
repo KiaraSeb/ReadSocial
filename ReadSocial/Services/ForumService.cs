@@ -1,12 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ReadSocial.Data;
 using ReadSocial.Dto;
 using ReadSocial.Interfaces;
 using ReadSocial.Models;
-using Thread = ReadSocial.Models.Thread;
-
 
 namespace ReadSocial.Services
 {
@@ -19,14 +18,16 @@ namespace ReadSocial.Services
             _context = context;
         }
 
-        public async Task<List<Thread>> GetThreads()
+        // Obtener todos los hilos
+        public async Task<IEnumerable<ReadSocial.Models.Thread>> GetThreadsAsync()
         {
             return await _context.Threads.ToListAsync();
         }
 
-        public async Task<Thread> CreateThreadAsync(CreateThreadDto dto)
+        // Crear un nuevo hilo
+        public async Task<ReadSocial.Models.Thread> CreateThreadAsync(CreateThreadDto dto)
         {
-            var thread = new Thread
+            var thread = new ReadSocial.Models.Thread
             {
                 Title = dto.Title,
                 Description = dto.Description,
@@ -35,28 +36,31 @@ namespace ReadSocial.Services
 
             _context.Threads.Add(thread);
             await _context.SaveChangesAsync();
-
             return thread;
         }
 
-        Task<List<System.Threading.Thread>> IForumService.GetThreads()
+        // Crear un nuevo post
+        public async Task<Post> CreatePostAsync(CreatePostDto dto)
         {
-            throw new NotImplementedException();
+            var post = new Post
+            {
+                ThreadId = dto.ThreadId,
+                Content = dto.Content,
+                Author = dto.Author,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            return post;
         }
 
-        Task<System.Threading.Thread> IForumService.CreateThreadAsync(CreateThreadDto dto)
+        // Obtener los posts de un hilo específico
+        public async Task<IEnumerable<Post>> GetPostsByThreadAsync(int threadId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Post>> GetPostsByThreadAsync(int threadId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Post> CreatePostAsync(CreatePostDto dto)
-        {
-            throw new NotImplementedException();
+            return await _context.Posts
+                .Where(p => p.ThreadId == threadId)
+                .ToListAsync();
         }
     }
 }

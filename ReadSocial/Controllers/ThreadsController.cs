@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ReadSocial.Interfaces;
 using ReadSocial.Dto;
-using ReadSocial.Models;
+using ReadSocial.Interfaces;
 
 namespace ReadSocial.Controllers
 {
@@ -16,34 +15,11 @@ namespace ReadSocial.Controllers
             _forumService = forumService;
         }
 
-        [HttpGet]
-        public IActionResult GetThreads()
-        {
-            var threads = _forumService.GetThreads();
-            return Ok(threads);
-        }
-
         [HttpPost]
         public async Task<IActionResult> CreateThread(CreateThreadDto dto)
         {
             var thread = await _forumService.CreateThreadAsync(dto);
-            return CreatedAtAction(nameof(GetThreads), new { id = thread.Id }, thread);
-        }
-
-        [HttpGet("{id}/posts")]
-        public IActionResult GetPosts(int id)
-        {
-            var posts = _forumService.GetPosts(id);
-            return Ok(posts);
-        }
-
-        [HttpPost("{id}/posts")]
-        public IActionResult CreatePost(int id, CreatePostDto dto)
-        {
-            dto.ThreadId = id;
-            var post = _forumService.CreatePost(dto);
-            if (post == null) return NotFound();
-            return Ok(post);
+            return CreatedAtAction(nameof(CreateThread), new { id = thread.ThreadId }, thread);
         }
     }
 }
