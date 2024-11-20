@@ -11,15 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Cargar las variables de entorno desde el archivo .env (si existe)
 var environmentVariables = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())  // Establecer el directorio de trabajo
-    .AddEnvironmentVariables()  // Cargar las variables de entorno
+    .SetBasePath(Directory.GetCurrentDirectory()) // Establecer el directorio de trabajo
+    .AddEnvironmentVariables()                   // Cargar las variables de entorno
     .Build();
 
 // Añadir las variables de entorno al builder de la aplicación
 builder.Configuration.AddConfiguration(environmentVariables);
 
-// Agregar los controladores
-builder.Services.AddControllers();
+// Verificación de las configuraciones necesarias
+if (string.IsNullOrEmpty(builder.Configuration["Jwt:Issuer"]) ||
+    string.IsNullOrEmpty(builder.Configuration["Jwt:Audience"]) ||
+    string.IsNullOrEmpty(builder.Configuration["Jwt:Key"]))
+{
+    throw new InvalidOperationException("Faltan configuraciones JWT necesarias en las variables de entorno.");
+}
 
 // Configuración de la cadena de conexión (usando las variables de entorno)
 var connetionString = builder.Configuration.GetConnectionString("cnBiblioteca");
@@ -34,6 +39,7 @@ connetionString = connetionString.Replace("DB_USER", builder.Configuration["DB_U
 connetionString = connetionString.Replace("DB_PASS", builder.Configuration["DB_PASS"]);
 
 // Agregar servicios a la aplicación
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -96,6 +102,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Construir y configurar la aplicación
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -105,6 +112,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

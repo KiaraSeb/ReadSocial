@@ -24,10 +24,14 @@ C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debu
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Identity.Client.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
@@ -143,7 +147,3 @@ C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\obj\Debu
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\obj\Debug\net8.0\ReadSocial.pdb
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\obj\Debug\net8.0\ReadSocial.genruntimeconfig.cache
 C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\obj\Debug\net8.0\ref\ReadSocial.dll
-C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
-C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
-C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
-C:\Users\Usuario\OneDrive - uap.edu.ar\Escritorio\ReadSocial\ReadSocial\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
