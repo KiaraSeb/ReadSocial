@@ -1,35 +1,84 @@
+/* Estilos básicos */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  #threads-list, #posts-list {
-    margin-top: 20px;
-  }
-  
-  form {
-    margin-top: 20px;
-  }
-  
-  input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+header {
+  background-color: #6200ea;
+  color: white;
+  padding: 1em 0;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  margin: 0.5em 0;
+}
+
+main {
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 1em;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+section {
+  margin-bottom: 2em;
+}
+
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4500b2;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: 1em;
+  border-bottom: 1px solid #ddd;
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+footer {
+  text-align: center;
+  padding: 1em;
+  margin-top: 2em;
+  font-size: 0.9rem;
+  color: #666;
+}
