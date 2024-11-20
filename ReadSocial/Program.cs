@@ -108,7 +108,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tu API v1"));
 }
 
 // Middleware de redirección HTTPS
@@ -127,8 +127,9 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = ""
 });
 
-// Mapeo de controladores
-app.MapControllers();
+// Configurar el enrutamiento
+app.UseRouting();
+app.MapControllers(); // Mapea los controladores
 
 // Ejecutar la aplicación
 app.Run();

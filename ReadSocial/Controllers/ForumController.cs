@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadSocial.Interfaces;
+using System.Linq; // Asegúrate de incluir esto
+using System.Threading.Tasks;
 
 namespace ReadSocial.Controllers
 {
@@ -20,6 +22,10 @@ namespace ReadSocial.Controllers
         public async Task<IActionResult> GetThreads()
         {
             var threads = await _forumService.GetThreadsAsync();
+            if (threads == null || !threads.Any()) // Cambiado a !threads.Any() para verificar si hay elementos
+            {
+                return NotFound("No se encontraron hilos."); // Manejo de errores
+            }
             return Ok(threads);
         }
     }
