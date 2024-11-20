@@ -11,14 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Cargar las variables de entorno desde el archivo .env (si existe)
 var environmentVariables = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory()) // Establecer el directorio de trabajo
-    .AddEnvironmentVariables()                   // Cargar las variables de entorno
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddEnvironmentVariables()
     .Build();
 
-// Añadir las variables de entorno al builder de la aplicación
 builder.Configuration.AddConfiguration(environmentVariables);
 
-// Verificación de las configuraciones necesarias
+// Validar configuraciones de JWT
 if (string.IsNullOrEmpty(builder.Configuration["Jwt:Issuer"]) ||
     string.IsNullOrEmpty(builder.Configuration["Jwt:Audience"]) ||
     string.IsNullOrEmpty(builder.Configuration["Jwt:Key"]))
@@ -26,19 +25,20 @@ if (string.IsNullOrEmpty(builder.Configuration["Jwt:Issuer"]) ||
     throw new InvalidOperationException("Faltan configuraciones JWT necesarias en las variables de entorno.");
 }
 
-// Configuración de la cadena de conexión (usando las variables de entorno)
-var connetionString = builder.Configuration.GetConnectionString("cnBiblioteca");
-if (string.IsNullOrEmpty(connetionString))
+// Obtener la cadena de conexión
+var connectionString = builder.Configuration.GetConnectionString("cnBiblioteca");
+if (string.IsNullOrEmpty(connectionString))
 {
     Console.WriteLine("No se pudo encontrar la cadena de conexión 'cnBiblioteca'.");
     return;
 }
 
-connetionString = connetionString.Replace("SERVER_NAME", builder.Configuration["SERVER_NAME"]);
-connetionString = connetionString.Replace("DB_USER", builder.Configuration["DB_USER"]);
-connetionString = connetionString.Replace("DB_PASS", builder.Configuration["DB_PASS"]);
+// Reemplazar valores en la cadena de conexión
+connectionString = connectionString.Replace("SERVER_NAME", builder.Configuration["SERVER_NAME"]);
+connectionString = connectionString.Replace("DB_USER", builder.Configuration["DB_USER"]);
+connectionString = connectionString.Replace("DB_PASS", builder.Configuration["DB_PASS"]);
 
-// Agregar servicios a la aplicación
+// Configurar servicios
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -71,18 +71,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddSqlServer<BibliotecaContext>(connetionString);
+// Configurar servicios de base de datos
+builder.Services.AddSqlServer<BibliotecaContext>(connectionString);
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
-// Configuración de Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connetionString));
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser , IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Configuración de JWT
+// Configurar autenticación JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -102,18 +102,33 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Construir y configurar la aplicación
 var app = builder.Build();
 
+// Configuración de Swagger en desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Middleware de redirección HTTPS
 app.UseHttpsRedirection();
+
+// Middleware de autenticación y autorización
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Configurar la carpeta de frontend si es necesario
+app.UseDefaultFiles(); // Permite que se busque automáticamente un archivo index.html
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "frontend")),
+    RequestPath = ""
+});
+
+// Mapeo de controladores
 app.MapControllers();
 
+// Ejecutar la aplicación
 app.Run();
