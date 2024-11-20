@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadSocial.Dto;
 using ReadSocial.Interfaces;
@@ -5,6 +6,7 @@ using ReadSocial.Interfaces;
 namespace ReadSocial.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ThreadsController : ControllerBase
     {

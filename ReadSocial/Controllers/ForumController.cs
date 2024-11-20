@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadSocial.Interfaces;
 
 namespace ReadSocial.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ForumController : ControllerBase
     {
