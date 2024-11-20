@@ -68,14 +68,14 @@
 
     // Crear nuevo hilo
     document.getElementById("new-thread-form").addEventListener("submit", function(event) {
-      event.preventDefault();
+      event.preventDefault();  // Evitar recarga de la página
       const title = document.getElementById("title").value;
       let hilos = JSON.parse(localStorage.getItem("hilos")) || [];
       const nuevoHilo = { title: title, posts: [] };
       hilos.push(nuevoHilo);
       localStorage.setItem("hilos", JSON.stringify(hilos));
       document.getElementById("title").value = "";
-      mostrarHilos();
+      mostrarHilos();  // Refrescar lista de hilos
     });
 
     // Mostrar los hilos
@@ -93,17 +93,23 @@
       });
     }
 
-    // Mostrar posts del hilo seleccionado
+    // Mostrar los posts del hilo seleccionado
     function mostrarPostsDeHilo(hiloIndex) {
       const hilos = JSON.parse(localStorage.getItem("hilos")) || [];
       const postsList = document.querySelector("#posts-list ul");
       postsList.innerHTML = ""; // Limpiar posts antes de mostrar nuevos
       const posts = hilos[hiloIndex].posts;
-      posts.forEach(post => {
+      if (posts.length > 0) {
+        posts.forEach(post => {
+          const li = document.createElement("li");
+          li.textContent = `${post.author}: ${post.content}`;
+          postsList.appendChild(li);
+        });
+      } else {
         const li = document.createElement("li");
-        li.textContent = `${post.author}: ${post.content}`;
+        li.textContent = "No hay posts en este hilo aún.";
         postsList.appendChild(li);
-      });
+      }
 
       // Mostrar la sección de crear posts
       document.getElementById("create-post").classList.remove("hidden");
@@ -112,7 +118,7 @@
 
     // Crear un post
     document.getElementById("new-post-form").addEventListener("submit", function(event) {
-      event.preventDefault();
+      event.preventDefault();  // Evitar recarga de la página
       const author = document.getElementById("author").value;
       const content = document.getElementById("content").value;
       const hiloIndex = document.getElementById("create-post").getAttribute("data-hiloIndex");  // Obtener índice del hilo
