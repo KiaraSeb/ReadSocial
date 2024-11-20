@@ -12,32 +12,13 @@
   </header>
 
   <main>
-    <!-- Sección de autenticación -->
-    <section id="login-section">
-      <h2>Inicia Sesión:</h2>
-      <form id="loginForm">
-        <input type="text" id="username" placeholder="Usuario" required>
-        <input type="password" id="password" placeholder="Contraseña" required>
-        <button type="submit">Iniciar Sesión</button>
-      </form>
+    <section id="login-section" style="display: none;">
+      <h2>Inicia sesión para participar:</h2>
+      <button onclick="window.location.href='login.html'">Iniciar Sesión</button>
+      <button onclick="window.location.href='signup.html'">Registrarse</button>
     </section>
 
-    <!-- Sección de recuperación de datos protegidos -->
-    <section id="protected-data-section">
-      <h2>Datos Protegidos:</h2>
-      <button id="fetchDataButton">Obtener Datos</button>
-    </section>
-
-    <!-- Lista de hilos -->
-    <section id="threads-list">
-      <h2>Hilos:</h2>
-      <ul class="list">
-        <!-- Aquí se listarán los hilos -->
-      </ul>
-    </section>
-
-    <!-- Crear un nuevo hilo -->
-    <section id="create-thread">
+    <section id="create-thread" class="hidden">
       <h2>Crea un Nuevo Hilo:</h2>
       <form id="new-thread-form">
         <input type="text" id="title" placeholder="Título del hilo" required>
@@ -45,16 +26,12 @@
       </form>
     </section>
 
-    <!-- Lista de posts -->
-    <section id="posts-list">
-      <h2>Posts del Hilo:</h2>
-      <ul class="list">
-        <!-- Aquí se listarán los posts de un hilo -->
-      </ul>
+    <section id="threads-list">
+      <h2>Hilos:</h2>
+      <ul class="list"></ul>
     </section>
 
-    <!-- Crear un nuevo post -->
-    <section id="create-post">
+    <section id="create-post" class="hidden">
       <h2>Crear un Post:</h2>
       <form id="new-post-form">
         <input type="text" id="author" placeholder="Autor" required>
@@ -62,12 +39,96 @@
         <button type="submit">Crear Post</button>
       </form>
     </section>
+
+    <section id="posts-list">
+      <h2>Posts:</h2>
+      <ul class="list"></ul>
+    </section>
+
   </main>
 
   <footer>
     <p>© 2024 Foro ReadSocial. Todos los derechos reservados.</p>
   </footer>
 
-  <script src="app.js" type="module"></script>
+  <script>
+    window.onload = function() {
+      if (localStorage.getItem("loggedIn") === "true") {
+        showAuthenticatedFeatures();
+        mostrarHilos();
+      } else {
+        document.getElementById("login-section").style.display = "block";
+      }
+    };
+
+    function showAuthenticatedFeatures() {
+      document.getElementById("create-thread").classList.remove("hidden");
+      document.getElementById("create-post").classList.remove("hidden");
+    }
+
+    // Crear nuevo hilo
+    document.getElementById("new-thread-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const title = document.getElementById("title").value;
+      let hilos = JSON.parse(localStorage.getItem("hilos")) || [];
+      const nuevoHilo = { title: title, posts: [] };
+      hilos.push(nuevoHilo);
+      localStorage.setItem("hilos", JSON.stringify(hilos));
+      document.getElementById("title").value = "";
+      mostrarHilos();
+    });
+
+    // Mostrar los hilos
+    function mostrarHilos() {
+      const hilos = JSON.parse(localStorage.getItem("hilos")) || [];
+      const threadsList = document.querySelector("#threads-list ul");
+      threadsList.innerHTML = "";
+      hilos.forEach((hilo, index) => {
+        const li = document.createElement("li");
+        li.textContent = hilo.title;
+        li.onclick = function() {
+          mostrarPostsDeHilo(index);
+        };
+        threadsList.appendChild(li);
+      });
+    }
+
+    // Mostrar posts del hilo seleccionado
+    function mostrarPostsDeHilo(hiloIndex) {
+      const hilos = JSON.parse(localStorage.getItem("hilos")) || [];
+      const postsList = document.querySelector("#posts-list ul");
+      postsList.innerHTML = ""; // Limpiar posts antes de mostrar nuevos
+      const posts = hilos[hiloIndex].posts;
+      posts.forEach(post => {
+        const li = document.createElement("li");
+        li.textContent = `${post.author}: ${post.content}`;
+        postsList.appendChild(li);
+      });
+
+      // Mostrar la sección de crear posts
+      document.getElementById("create-post").classList.remove("hidden");
+      document.getElementById("create-post").setAttribute("data-hiloIndex", hiloIndex);  // Establecer índice
+    }
+
+    // Crear un post
+    document.getElementById("new-post-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const author = document.getElementById("author").value;
+      const content = document.getElementById("content").value;
+      const hiloIndex = document.getElementById("create-post").getAttribute("data-hiloIndex");  // Obtener índice del hilo
+
+      let hilos = JSON.parse(localStorage.getItem("hilos")) || [];
+      const nuevoPost = { author: author, content: content };
+      hilos[hiloIndex].posts.push(nuevoPost);
+      localStorage.setItem("hilos", JSON.stringify(hilos));
+
+      // Limpiar formulario
+      document.getElementById("author").value = "";
+      document.getElementById("content").value = "";
+
+      // Actualizar los posts del hilo seleccionado
+      mostrarPostsDeHilo(hiloIndex);
+    });
+  </script>
 </body>
 </html>

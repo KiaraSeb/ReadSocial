@@ -21,22 +21,22 @@ namespace ReadSocial.Controllers
 
         // Obtener todos los hilos
         [HttpGet]
-        public async Task<ActionResult<List<ThreadDto>>> GetAllThreads() // Cambiado a Task<ActionResult<List<ThreadDto>>>
+        public async Task<ActionResult<List<ThreadDto>>> GetAllThreads()
         {
-            var threads = await _forumService.GetAllThreadsAsync(); // Cambiado a GetAllThreadsAsync
-            return Ok(threads);
+            var threads = await _forumService.GetAllThreadsAsync(); 
+            return Ok(threads); // Retorna todos los hilos en la base de datos
         }
 
         // Obtener un hilo por ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<ThreadDto>> GetThreadById(int id) // Cambiado a Task<ActionResult<ThreadDto>>
+        public async Task<ActionResult<ThreadDto>> GetThreadById(int id)
         {
-            var thread = await _forumService.GetThreadByIdAsync(id); // Cambiado a GetThreadByIdAsync
+            var thread = await _forumService.GetThreadByIdAsync(id); 
             if (thread == null)
             {
                 return NotFound("Hilo no encontrado");
             }
-            return Ok(thread);
+            return Ok(thread); // Retorna el hilo con el ID proporcionado
         }
 
         // Crear un nuevo hilo
@@ -48,7 +48,10 @@ namespace ReadSocial.Controllers
                 return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
             }
 
+            // Llamada al servicio para crear el hilo
             var createdThread = await _forumService.CreateThreadAsync(dto);
+
+            // Retornar el hilo creado con una URL de referencia al nuevo hilo
             return CreatedAtAction(nameof(GetThreadById), new { id = createdThread.Id }, createdThread);
         }
     }
