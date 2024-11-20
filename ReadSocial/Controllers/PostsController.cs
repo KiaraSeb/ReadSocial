@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReadSocial.Dto;
 using ReadSocial.Interfaces;
+using ReadSocial.Dto;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReadSocial.Controllers
 {
     [ApiController]
-    [Authorize] // Asegúrate de que el usuario esté autenticado
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
@@ -18,22 +17,24 @@ namespace ReadSocial.Controllers
             _forumService = forumService;
         }
 
-        // Método para crear un nuevo post
-        [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] CreatePostDto dto) // Asegúrate de que el DTO se reciba del cuerpo de la solicitud
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetAllPosts()
         {
-            if (dto == null)
-            {
-                return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
-            }
+            var posts = await _forumService.GetAllPostsAsync();
+            return Ok(posts);
+        }
 
-            var post = await _forumService.CreatePostAsync(dto);
+        [HttpGet("{postId}")]
+        public async Task<ActionResult<PostDto>> GetPostById(int postId)
+        {
+            var post = await _forumService.GetPostByIdAsync(postId);
             if (post == null)
             {
-                return StatusCode(500, "Error al crear el post."); // Manejo de errores
+                return NotFound();
             }
-
-            return CreatedAtAction(nameof(CreatePost), new { id = post.PostId }, post);
+            return Ok(post);
         }
+
+        // Otros métodos para crear, actualizar y eliminar posts...
     }
 }

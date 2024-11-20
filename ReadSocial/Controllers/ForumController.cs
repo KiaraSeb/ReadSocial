@@ -21,7 +21,7 @@ namespace ReadSocial.Controllers
         [HttpGet]
         public async Task<IActionResult> GetThreads()
         {
-            var threads = await _forumService.GetThreadsAsync();
+            var threads = await _forumService.GetAllThreadsAsync(); // Cambiado a GetAllThreadsAsync
             if (threads == null || !threads.Any()) // Cambiado a !threads.Any() para verificar si hay elementos
             {
                 return NotFound("No se encontraron hilos."); // Manejo de errores

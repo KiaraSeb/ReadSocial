@@ -1,22 +1,20 @@
+using ReadSocial.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ReadSocial.Dto;
-using ReadSocial.Models;
 
 namespace ReadSocial.Interfaces
 {
     public interface IForumService
     {
-        // Obtener todos los hilos
-        Task<IEnumerable<ReadSocial.Models.Thread>> GetThreadsAsync();
-
-        // Crear un nuevo hilo
-        Task<ReadSocial.Models.Thread> CreateThreadAsync(CreateThreadDto dto);
-
-        // Crear un nuevo post
-        Task<Post> CreatePostAsync(CreatePostDto dto);
-
-        // Obtener los posts de un hilo específico
-        Task<IEnumerable<Post>> GetPostsByThreadAsync(int threadId);
+        Task<IEnumerable<ThreadDto>> GetAllThreadsAsync();
+        Task<ThreadDto> GetThreadByIdAsync(int id);
+        Task<ThreadDto> CreateThreadAsync(CreateThreadDto dto);
+        
+        // Métodos para los posts
+        Task<IEnumerable<PostDto>> GetAllPostsAsync(); // Método para obtener todos los posts
+        Task<PostDto> GetPostByIdAsync(int postId); // Método para obtener un post por ID
+        Task<PostDto> CreatePostAsync(CreatePostDto dto); // Método para crear un nuevo post
+        Task<PostDto> UpdatePostAsync(UpdatePostDto dto);  // Método para actualizar un post
+        Task<bool> DeletePostAsync(int postId); // Método para eliminar un post
     }
 }

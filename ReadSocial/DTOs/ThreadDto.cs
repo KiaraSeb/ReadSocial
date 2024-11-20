@@ -1,8 +1,6 @@
-using System;
-
-namespace ReadSocial.Models
+namespace ReadSocial.Dto
 {
-    public class Thread
+    public class ThreadDto
     {
         public int Id { get; set; } // ID del hilo
         public string Title { get; set; } // Título del hilo

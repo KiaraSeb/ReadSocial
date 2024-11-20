@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadSocial.Dto;
 using ReadSocial.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReadSocial.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/threads")]
     public class ThreadsController : ControllerBase
     {
         private readonly IForumService _forumService;
@@ -18,21 +19,37 @@ namespace ReadSocial.Controllers
             _forumService = forumService;
         }
 
+        // Obtener todos los hilos
+        [HttpGet]
+        public async Task<ActionResult<List<ThreadDto>>> GetAllThreads() // Cambiado a Task<ActionResult<List<ThreadDto>>>
+        {
+            var threads = await _forumService.GetAllThreadsAsync(); // Cambiado a GetAllThreadsAsync
+            return Ok(threads);
+        }
+
+        // Obtener un hilo por ID
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ThreadDto>> GetThreadById(int id) // Cambiado a Task<ActionResult<ThreadDto>>
+        {
+            var thread = await _forumService.GetThreadByIdAsync(id); // Cambiado a GetThreadByIdAsync
+            if (thread == null)
+            {
+                return NotFound("Hilo no encontrado");
+            }
+            return Ok(thread);
+        }
+
+        // Crear un nuevo hilo
         [HttpPost]
-        public async Task<IActionResult> CreateThread([FromBody] CreateThreadDto dto) // Asegúrate de que el DTO se reciba del cuerpo de la solicitud
+        public async Task<ActionResult<ThreadDto>> CreateThread([FromBody] CreateThreadDto dto)
         {
             if (dto == null)
             {
-                return BadRequest("El cuerpo de la solicitud no puede estar vacío."); // Validación del cuerpo
+                return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
             }
 
-            var thread = await _forumService.CreateThreadAsync(dto);
-            if (thread == null)
-            {
-                return StatusCode(500, "Error al crear el hilo."); // Manejo de errores
-            }
-
-            return CreatedAtAction(nameof(CreateThread), new { id = thread.ThreadId }, thread);
+            var createdThread = await _forumService.CreateThreadAsync(dto);
+            return CreatedAtAction(nameof(GetThreadById), new { id = createdThread.Id }, createdThread);
         }
     }
 }
