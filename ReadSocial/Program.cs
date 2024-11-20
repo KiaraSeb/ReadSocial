@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using ReadSocial.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

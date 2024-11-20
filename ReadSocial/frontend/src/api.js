@@ -1,23 +1,33 @@
 // api.js
-import API_BASE_URL from './config.js';
+const API_URL = 'https://localhost:5001/api'; // Cambia esto si tu API tiene una ruta diferente
 
-export const login = async (username, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    });
-    return response.json();
-};
+export async function login(username, password) {
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  });
 
-export const getProtectedData = async (token) => {
-    const response = await fetch(`${API_BASE_URL}/protected-route`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return response.json();
-};
+  if (!response.ok) {
+    throw new Error('Error en el inicio de sesión');
+  }
+
+  return await response.json();
+}
+
+export async function getProtectedData(token) {
+  const response = await fetch(`${API_URL}/protected`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Error al obtener datos protegidos');
+  }
+
+  return await response.json();
+}
