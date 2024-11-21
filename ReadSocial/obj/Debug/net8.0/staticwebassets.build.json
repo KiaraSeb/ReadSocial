@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "DIFtgUGE9kTTu+dUDYf/GZGHLZmpd6opXbMDyPpNINc=",
-  "Source": "ReadSocial",
-  "BasePath": "_content/ReadSocial",
+  "Hash": "6Q/8b5ULCqWugalMeWx71qlrB8k97S0IUVyrRnzi/g0=",
+  "Source": "foro-readsocial",
+  "BasePath": "_content/foro-readsocial",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

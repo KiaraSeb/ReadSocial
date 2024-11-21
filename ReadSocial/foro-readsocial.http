@@ -1,0 +1,6 @@
+@foro_readsocial_HostAddress = http://localhost:5133
+
+GET {{foro_readsocial_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
